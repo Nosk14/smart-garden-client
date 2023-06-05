@@ -21,7 +21,7 @@ void loop() {
   float soil_humidity = read_soil_humidity(SOIL_HUMIDITY_SENSOR);
 
   char payload[8];
-  snprintf(payload, 8, "%f.2", soil_humidity);
+  snprintf(payload, 8, "%.2f", soil_humidity);
 
   wifi_connect(WIFI_SSID, WIFI_PASSWORD);
   mqtt_connect(MQTT_HOST);
