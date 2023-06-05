@@ -1,18 +1,35 @@
+#include <constants.h>
 #include <Arduino.h>
+#include <stdio.h>
+#include <MyWiFi.h>
+#include <MyMQTT.h>
+#include <MySensors.h>
 
-// put function declarations here:
-int myFunction(int, int);
+
+#define US_TO_SECONDS 1000000
+#define SOIL_HUMIDITY_SENSOR 32
+
+
+const int TIME_TO_SLEEP = 4 * 3600 * 1000000;
+
 
 void setup() {
-  // put your setup code here, to run once:
-  int result = myFunction(2, 3);
+  esp_sleep_enable_timer_wakeup(TIME_TO_SLEEP);
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-}
+  float soil_humidity = read_soil_humidity(SOIL_HUMIDITY_SENSOR);
 
-// put function definitions here:
-int myFunction(int x, int y) {
-  return x + y;
+  char payload[8];
+  snprintf(payload, 8, "%f.2", soil_humidity);
+
+  wifi_connect(WIFI_SSID, WIFI_PASSWORD);
+  mqtt_connect(MQTT_HOST);
+
+  mqtt_publish("test", payload);
+
+  mqtt_disconnect();
+  wifi_disconnect();
+
+  esp_deep_sleep_start();
 }

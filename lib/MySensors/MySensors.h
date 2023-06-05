@@ -1,0 +1,1 @@
+float read_soil_humidity(int pin);
