@@ -6,15 +6,12 @@
 #include <MySensors.h>
 
 
-#define US_TO_SECONDS 1000000
+#define US_TO_SECONDS 1000000ULL
 #define SOIL_HUMIDITY_SENSOR 32
-
-
-const int TIME_TO_SLEEP = 4 * 3600 * 1000000;
-
+#define TIME_TO_SLEEP 14400ULL // 4 hours in seconds
 
 void setup() {
-  esp_sleep_enable_timer_wakeup(TIME_TO_SLEEP);
+  esp_sleep_enable_timer_wakeup(TIME_TO_SLEEP * US_TO_SECONDS);
 }
 
 void loop() {
